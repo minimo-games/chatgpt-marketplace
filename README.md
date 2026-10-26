@@ -8,9 +8,11 @@ install it.
 In the ChatGPT desktop app:
 
 1. Open **Plugins**, then **Add** > **Add a marketplace**.
-2. Enter `minimo-games/chatgpt-marketplace` as the source, and add it.
-3. In the **Marketplace** tab, install **Minimo Games**.
-4. Sign in with your Minimo Games account when ChatGPT asks.
+2. Enter `minimo-games/chatgpt-marketplace` as the **Source**, and select **Add marketplace**.
+3. Select **Browse directory**, then the **Personal** tab, and open **Minimo Games**.
+4. Select **Install plugin**.
+5. Sign in with your Minimo Games account, and select **Allow**.
+6. Select **Try now** to start a conversation with Minimo Games.
 
 With Codex in a terminal:
 
