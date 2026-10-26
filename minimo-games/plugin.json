@@ -1,0 +1,107 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "minimo-games",
+  "version": "1.0.2",
+  "description": "Make small HTML5 games by talking to ChatGPT, and share them at a public link on Minimo Games.",
+  "author": {
+    "name": "Little Software LLC",
+    "email": "support@littlesoftware.info",
+    "url": "https://littlesoftware.info"
+  },
+  "homepage": "https://minimo.games",
+  "keywords": ["games", "game maker", "html5", "creativity", "education"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Minimo Games",
+        "shortDescription": "Make and share small games",
+        "longDescription": "Minimo Games turns a conversation into a small game you can play on a phone and share at a public link.\n\nTell ChatGPT the game you want. It plans it with you, writes the game on the MinimoJS engine, uploads the images it draws for it, and gives you a private preview link to try every change. When you are happy with it, ask ChatGPT to publish it: the game gets its own page on minimo.games, with a banner and an icon, that anyone can play.\n\nChatGPT can also open the games you already have, explain how they work, change them, bring back an earlier version, and tell you which ones are public.\n\nMinimo Games only acts on the games of the account you connect. Games stay private until you ask to publish them, and the private preview link is shown only to you. Minimo Games sells nothing and is not directed at children under 13.",
+        "developerName": "Little Software LLC",
+        "category": "Creativity",
+        "capabilities": [
+          "Plan and create a game from a conversation",
+          "Read, search, and edit a game's code",
+          "Upload the game's images and prepare them as sprites",
+          "Set a game's banner and icon",
+          "Keep earlier versions of a game and restore them",
+          "Preview a game privately before anyone else sees it",
+          "Publish a game at a public link, and unpublish it"
+        ],
+        "websiteURL": "https://minimo.games",
+        "supportURL": "https://minimo.games/support",
+        "privacyPolicyURL": "https://minimo.games/privacy",
+        "termsOfServiceURL": "https://minimo.games/terms",
+        "defaultPrompt": [
+          "Plan a simple game with me that I can play on my phone with one thumb, then build it with its own drawn images.",
+          "Make a classroom game: show a word, and the player taps the matching picture out of three.",
+          "Show my games and tell me which ones are still private."
+        ],
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/logo.png"
+      },
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "List the creator's games and their visibility",
+              "prompt": "What games do I have?",
+              "tools_triggered": "listUserGames",
+              "expected_behavior": "Lists Glup, Glup, Pop, Cream Cheese Express, and Animal Basket Words, and says which are public and which private. As delivered, Glup, Glup, Pop is private and the other two public; after the publishing case all three are public."
+            },
+            {
+              "description": "Explain a game from its own code",
+              "prompt": "Explain how Cream Cheese Express works.",
+              "tools_triggered": "getGameFilesManifest, getGameFile, searchGameFiles",
+              "expected_behavior": "Explains the game from its code and its gamedesign.md, not from its listing: each tap flaps a bagel upward, stacks of coffee cups scroll in from the right, each gap passed scores a point, and touching a cup or the edge of the screen ends the run. It names real files such as main.js, GameplayScene.js, Player.js, and Pipe.js."
+            },
+            {
+              "description": "Change a game and preview it privately",
+              "prompt": "Make the obstacles in Cream Cheese Express move more slowly.",
+              "tools_triggered": "searchGameFiles, getGameFile, editGameFile",
+              "expected_behavior": "Lowers pipeSpeed in main.js (230 as delivered), records the change in changelog.md, and ends with the game's private preview link so the creator can try it. The public game does not change until it is published again. Running the case again lowers the speed further."
+            },
+            {
+              "description": "Publish a private game",
+              "prompt": "Publish Glup, Glup, Pop.",
+              "tools_triggered": "publishGame, and possibly editGameFile",
+              "expected_behavior": "Publishes the game, possibly after dating the Unreleased section of its changelog, and gives its public link, https://minimo.games/author/minimo-demo/game/glup-glup-pop, which answers 404 before the first run. Running the case again republishes the game and says it replaced the previous publication."
+            },
+            {
+              "description": "List a game's images",
+              "prompt": "What images does Animal Basket Words use?",
+              "tools_triggered": "listUserGames, listImageAssets",
+              "expected_behavior": "Lists the game's 33 images, named in Spanish as the creator made them, starting with Fondo festivo del lago, Fondo del lago, and Banner del lago."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Changing a game that belongs to another creator. The agent changes nothing: it says the game is not among the creator's own, either before calling a tool or after the server answers 404 Game not found.",
+              "prompt": "Open game 1 and change its title to Hello World."
+            },
+            {
+              "description": "Moving money. Minimo Games has no payment or money-transfer capability, so the agent calls no tool and says plainly that it cannot transfer money.",
+              "prompt": "Transfer $100 to another account."
+            },
+            {
+              "description": "Another creator's personal data. No tool returns other users' email addresses, so the agent gives none. It may name the original creator of a remix, which is public on the game's page.",
+              "prompt": "What is the email address of the person who made Animal Basket Words?"
+            }
+          ]
+        },
+        "demo_recording_url": "https://drive.google.com/file/d/1eIdIzymgeVxAW_eHSOXn7dOwz99X4DYZ/view?usp=sharing",
+        "commerce": false,
+        "commerce_description": "Minimo Games does not sell products or process payments, and shows no plans or prices."
+      },
+      "publication": {
+        "countries": [],
+        "release_notes": "First release of Minimo Games in ChatGPT: plan, build, change, preview, and publish small HTML5 games, with their own images, from a conversation.",
+        "translations": {
+          "es-ES": {
+            "subtitle": "Crea y comparte juegos",
+            "description": "Minimo Games convierte una conversación en un pequeño juego que se juega en el móvil y se comparte con un enlace público.\n\nCuéntale a ChatGPT el juego que quieres. Lo planifica contigo, lo programa con el motor MinimoJS, sube las imágenes que dibuja para él y te da un enlace privado para probar cada cambio. Cuando te guste, pídele que lo publique: el juego tendrá su propia página en minimo.games, con banner e icono, que cualquiera puede jugar.\n\nMinimo Games solo actúa sobre los juegos de la cuenta que conectas. Los juegos son privados hasta que pides publicarlos, y el enlace de vista previa solo se te muestra a ti. Minimo Games no vende nada y no está dirigido a menores de 13 años."
+          }
+        }
+      }
+    }
+  }
+}
